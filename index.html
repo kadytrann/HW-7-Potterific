@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .over {
+            background-color: orange;
+        }
+        .selected {
+            background-color: green;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .houseButton {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #resetButton {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttons"></div>
+    <table border='1'>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>role</th>
+                <th>house</th>
+                <th>gender</th>
+                <th>alignment</th>
+            </tr>
+        </thead>
+        <tbody id="characterTable">
+        </tbody>
+    </table>
+    <button id="resetButton">reset</button>
+    <script>
+        var characters = [
+            {name:"Albus Dumbledore", role:"Staff", house:"Gryffindor", gender:"M", alignment:"Good"},    
+            {name:"Nymphadora Tonks", role:"?", house:"Hufflepuff", gender:"F", alignment:"Good"},    
+            {name:"Ron Weasley", role:"Student", house:"Gryffindor", gender:"M", alignment:"Good"},    
+            {name:"Ginny Weasley", role:"Student", house:"Gryffindor", gender:"F", alignment:"Good"},    
+            {name:"Hermione Granger", role:"Student", house:"Gryffindor", gender:"F", alignment:"Good"},    
+            {name:"Mad-eye Moody", role:"Staff", house:"N/A", gender:"M", alignment:"Good"},    
+            {name:"Prof McGonagall", role:"Staff", house:"Gryffindor", gender:"F", alignment:"Good"},    
+            {name:"Harry Potter", role:"Student", house:"Gryffindor", gender:"M", alignment:"Good"},    
+            {name:"Draco Malfoy", role:"Student", house:"Slytherin", gender:"M", alignment:"Evil"},    
+            {name:"Hagrid", role:"Staff", house:"Gryffindor", gender:"M", alignment:"Good"},    
+            {name:"Luna Lovegood", role:"Student", house:"Ravenclaw", gender:"F", alignment:"Good"},    
+            {name:"Voldemort", role:"?", house:"Slytherin", gender:"M", alignment:"Evil"},    
+            {name:"Bellatrix Lestrange", role:"?", house:"Slytherin", gender:"F", alignment:"Evil"},           
+            {name:"Severus Snape", role:"Staff", house:"Slytherin", gender:"M", alignment:"?"}
+        ];
+
+        $(document).ready(function(){
+            var uniqueHouses = [];
+
+            // Generate table rows
+            var characterTable = $('#characterTable');
+            characters.forEach(function(character) {
+                characterTable.append('<tr class="characterRow"><td>' + character.name + '</td><td>' + character.role + '</td><td>' + character.house + '</td><td>' + character.gender + '</td><td>' + character.alignment + '</td></tr>');
+                if (!uniqueHouses.includes(character.house)) {
+                    uniqueHouses.push(character.house);
+                }
+            });
+
+            // Generate house filter buttons
+            var buttonsDiv = $('#buttons');
+            uniqueHouses.forEach(function(house) {
+                buttonsDiv.append('<button class="houseButton" data-house="' + house + '">' + house + '</button>');
+            });
+
+            // Handle house filter buttons
+            $('.houseButton').click(function() {
+                var houseFilter = $(this).data('house');
+                $('.characterRow').hide(); // Hide all rows
+                $('.characterRow').filter(function() {
+                    return $(this).children('td:nth-child(3)').text() === houseFilter;
+                }).show();
+            });
+
+            // Handle reset button
+            $('#resetButton').click(function() {
+                $('.characterRow').show();
+            });
+        });
+    </script>
+</body>
+</html>
